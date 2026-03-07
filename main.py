@@ -15,7 +15,6 @@ class LinkedList:
     
     def set(self, key, value):
         try:
-
             new_node = Node(key, value)
             if self.head is None:
                 self.head = new_node
@@ -39,23 +38,32 @@ class LinkedList:
         while current:
             if current.key == key:
                 print(current.key, current.value, '\n')
-            return
+                return
+            current = current.next
+            
+        
         print(f"{key} not found.")
+        return
              
 
 def main(): 
     key_vals = LinkedList()
-    
+
     while (True):
         user_input = input()
-        command = user_input.split(maxsplit=1)[0]
+        command = user_input.split()[0]
+        print(command)
         match command:
             case 'SET':
-                pass
+                parts = user_input.split()
+                print(parts)
+                key = parts[1]
+                value = parts[2]
+                key_vals.set(key, value)
             case 'GET':
                 parts = user_input.split()
                 key = int(parts[1])
-                key_vals.get(int(key))
+                key_vals.get(key)
             case 'EXIT':
                 break
 
