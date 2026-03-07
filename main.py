@@ -25,7 +25,7 @@ class LinkedList:
                 self.tail = new_node
 
             with open('data.db', 'a') as f:
-                line = f"{new_node.key},{new_node.value}"
+                line = f"{new_node.key},{new_node.value}\n"
                 f.write(line)
             
             return
@@ -37,9 +37,13 @@ class LinkedList:
         current = self.head
         while current:
             if current.key == key:
-                print(current.key, current.value, '\n')
-                return
+                result = current
             current = current.next
+        
+        if result:
+            print(result.value, '\n')
+        else:
+            print(f"{key} not found.")
             
         
         print(f"{key} not found.")
@@ -52,17 +56,15 @@ def main():
     while (True):
         user_input = input()
         command = user_input.split()[0]
-        print(command)
         match command:
             case 'SET':
                 parts = user_input.split()
-                print(parts)
                 key = parts[1]
                 value = parts[2]
                 key_vals.set(key, value)
             case 'GET':
                 parts = user_input.split()
-                key = int(parts[1])
+                key = parts[1]
                 key_vals.get(key)
             case 'EXIT':
                 break
