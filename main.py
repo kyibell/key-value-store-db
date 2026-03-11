@@ -1,6 +1,7 @@
 import os
 from LinkedList import LinkedList
 import logging
+import sys
 
 logging.basicConfig(
      level=logging.INFO,
@@ -73,10 +74,11 @@ def main():
         try:
             user_input = input().strip()
         except EOFError:
-            logger.info('EOF Recieved, Exiting...')
+            logger.info('EOF Received. Exiting...')
             break
+
         except KeyboardInterrupt:
-            logger.info('Keyboard Interruot recieved. Exiting...')
+            logger.info('Keyboard Interrupt Received. Exiting...')
             break
             
         if not user_input:
@@ -95,23 +97,31 @@ def main():
                     
                     key_vals.set(key, value)
                     logger.debug(f'SET {key}, with value {value}')
-                except Exception as e:
-                     logger.error(f"Failed to set key: {key} and value {value}: {e}")
+                except IndexError:
+                     logger.error('SET requires a key and value. Usage: SET <key> <value>')
+
+                except OSError as e:
+                     logger.error(f"Failed to set key: {key} and value: {value} to disk: {e}")
 
             case 'GET':
-                key = parts[1]
                 try:
+                    key = parts[1]
+
                     val = key_vals.get(key)
                     # flush=True ensures the output is sent immediately
                     if val:
                         print(val, flush=True)
-                except Exception as e:
-                     logger.error(f'Failed to get with key {key}: {e}')
+
+                except IndexError:
+                     logger.error('GET requires a key. Usage: GET <key>')
+
+                except OSError as e:
+                     logger.error(f'Failed to get with key: {key} from disk: {e}')
             case 'EXIT':
                 # Clean exit — break out of the loop and let main() return 0.
-                logger.info('EXIT command recieved. Exiting...')
+                logger.info('EXIT Command Received. Exiting...')
                 break
-
+        
     
     return 0
 
@@ -119,4 +129,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
