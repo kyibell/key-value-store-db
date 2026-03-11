@@ -1,1 +1,4 @@
-gradebot
+gradebot*
+*venv
+__pycache__
+LICENSE
